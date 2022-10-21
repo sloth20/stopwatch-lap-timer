@@ -3,14 +3,13 @@ import CurrentTime from "./CurrentTime.js";
 
 export default function App($app) {
 
-  this.state = {
+  let state = {
     runningState: 'preRun' // preRun, run, stop
   };
 
-
-  this.setState = (nextState) => {
-    this.state = nextState;
-    this.render();
+  const setState = (nextState) => {
+    state = nextState;
+    render();
   };
 
   const $target = document.createElement('div');
@@ -19,42 +18,44 @@ export default function App($app) {
 
   $app.append($target);
 
+  let currentTime;
+  let buttons;
+ 
 
-  const currentTime = new CurrentTime({ $app });
-  const buttons = new Buttons({ $app, runningState: this.state.runningState });
 
-  this.render = () => {
-    switch(this.state.runningState){
-      case 'preRun':
+    const render = () => {
+      if(!currentTime){ currentTime = new CurrentTime({$app, runningState: state.runningState })}
+      if(!buttons){ buttons = new Buttons({$app, runningState: state.runningState })}
 
-      case 'run':
-      case 'start':
-        
+      currentTime.setState({ runningState: state.runningState });
+      buttons.setState({ runningState: state.runningState });
+
+      handleEventListening();
     }
-  };
- 
- 
- 
- 
- 
-  const $startButton = $app.getElementsByClassName('start');
-  const $stopButton = $app.getElementsByClassName('stop');
-  const $igoButton = $app.getElementsByClassName('igo');
- 
- 
-   $startButton[0].addEventListener('click', e => {
-     alert("start 눌림")
-     // currentTime의 state 바꾸기
-   });
-   $stopButton[0].addEventListener('click', e => {
-     alert("stop 눌림")
-   });
-   $igoButton[0].addEventListener('click', e => {
-     alert("igo 눌림")
-   });
- 
 
+    const handleEventListening = () => {
+      const $startButton = document.querySelector('.start');
+      if($startButton){
+        $startButton.addEventListener('click', e => {
+          setState({...this.state, runningState: 'run'});
+        });
+      }
 
+      const $stopButton = document.querySelector('.stop');
+      if($stopButton){
+        $stopButton.addEventListener('click', e => {
+          setState({...this.state, runningState: 'stop'});
+        }); 
+      }
+     
+      const $resetButton = document.querySelector('.reset');
+      if($resetButton) {
+        $resetButton.addEventListener('click', e => {
+          setState({...this.state, runningState: 'preRun'});
+        });
+      }
+    }
 
+    render();
 
 }
