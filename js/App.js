@@ -13,8 +13,7 @@ export default function App($app) {
   };
 
   const $target = document.createElement('div');
-  $target.className = 'wow';
-  $target.innerHTML = `<b>강조된 글자</b>`;
+  $target.className = 'app';
 
   $app.append($target);
 

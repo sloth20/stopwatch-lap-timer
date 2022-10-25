@@ -6,13 +6,13 @@ export default function CurrentTime({ $app, runningState }){
   let stopTime = 0;
 
   const $target = document.createElement('div');
-  $target.className = 'wow';
+  $target.className = 'currentTime';
   $app.append($target);
   let timer = null;
   
   const render = () => {
     switch(this.runningState) {
-      case 'preRun': // 초기화
+      case 'preRun':
         clearInterval(timer);  
         stopTime = 0;
         displayTime = 0;
@@ -36,8 +36,8 @@ export default function CurrentTime({ $app, runningState }){
   const displayTimeToMinAndSecAndMs = () => {
     let min = Math.floor(displayTime/1000/60);
     let sec = Math.floor(displayTime/1000%60);
-    let ms = Math.floor(displayTime%100); // 수정 필요
-    console.log(ms);
+    let ms = Math.floor(displayTime/10%100);
+
     if (min<10) {
       min = '0' + min.toString();
     }
