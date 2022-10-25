@@ -53,6 +53,13 @@ export default function App($app) {
           setState({...this.state, runningState: 'preRun'});
         });
       }
+
+      const $lapButton = document.querySelector('.lap');
+      if($lapButton) {
+        $lapButton.addEventListener('click', e => {
+          currentTime.handleLapClick();
+        });
+      }
     }
 
     render();

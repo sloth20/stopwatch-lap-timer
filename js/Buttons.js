@@ -9,16 +9,20 @@ export default function Buttons ({ $app, runningState }) {
     switch(this.runningState) {
       case 'preRun':
         $target.innerHTML = `
+        <br />
         <button class="start">시작</button>
         `;
         break;        
       case 'run':
         $target.innerHTML = `
+        <br />
+        <button class="lap">랩</button>
         <button class="stop">정지</button>
         `;
         break;        
       case 'stop':
         $target.innerHTML = `
+        <br />
         <button class="start">재시작</button>
         <button class="reset">리셋</button>
         `;
