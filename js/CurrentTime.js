@@ -4,7 +4,7 @@ export default function CurrentTime({ $app, runningState }){
   let presentTime = 0;
   let targetTime = 0;
   let stopTime = 0;
-  let laps = [];
+  let lapOrder = 1;
   let timer = null;
 
   const $target = document.createElement('div');
@@ -15,8 +15,6 @@ export default function CurrentTime({ $app, runningState }){
   $target2.className = 'laps-list';
   $target2.innerHTML = '<tr><th>순번</th><th>시간</th></tr>';
   $app.append($target2);
-
-
   
   const render = () => {
     switch(this.runningState) {
@@ -24,14 +22,16 @@ export default function CurrentTime({ $app, runningState }){
         clearInterval(timer);  
         stopTime = 0;
         displayTime = 0;
-        $target.innerHTML = `<i>${displayTimeToMinAndSecAndMs()}</i>`;
+        lapOrder = 1;
+        $target.innerHTML = `<i>${displayTimeToMinAndSecAndMs(displayTime)}</i>`;
+        $target2.innerHTML = '<tr><th>순번</th><th>시간</th></tr>';
         break;
       case 'run':
         targetTime = new Date().getTime();
-        timer = setInterval(()=> {
+        timer = setInterval(() => {
           presentTime = new Date().getTime();
           displayTime = stopTime + presentTime - targetTime;
-          $target.innerHTML = `<i>${displayTimeToMinAndSecAndMs()}</i>`;
+          $target.innerHTML = `<i>${displayTimeToMinAndSecAndMs(displayTime)}</i>`;
         }, 10);
         break;
       case 'stop':
@@ -39,11 +39,11 @@ export default function CurrentTime({ $app, runningState }){
         stopTime = displayTime;
         break;
     }
-    // 여기에 laps가 비지 않았을 때 td 태그로 이루어진 랩 기록 보여주도록 처리. displayTimeToMinAndSecAndMs() 사용
   }
 
   this.handleLapClick = () => {
-    laps.push(displayTime);
+    $target2.innerHTML += `<tr><td>${lapOrder}</td><td>${displayTimeToMinAndSecAndMs(displayTime)}</td></tr>`;
+    lapOrder++;
   }
 
   const displayTimeToMinAndSecAndMs = () => {
